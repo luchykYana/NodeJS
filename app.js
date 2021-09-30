@@ -4,9 +4,7 @@ const path = require('path');
 const firstPath = path.join(__dirname, 'files', 'boys');
 const secondPath = path.join(__dirname, 'files', 'girls');
 
-
-function InspectionAndReplacement(pathNeedGender, pathGender, gender) {
-
+function inspectionAndReplacement(pathNeedGender, pathGender, gender) {
     fs.readdir(pathNeedGender, (err, data) => {
         if (err) {
             console.log(err);
@@ -15,13 +13,16 @@ function InspectionAndReplacement(pathNeedGender, pathGender, gender) {
 
         data.forEach(fileName => {
             const startPath = path.join(pathNeedGender, fileName);
+
             fs.readFile(startPath , (err, data) => {
                 if (err) {
                     console.log(err);
                     return;
                 }
 
-                if(JSON.parse(data.toString()).gender === gender){
+                const genderFromJSON = JSON.parse(data.toString()).gender;
+
+                if(genderFromJSON === gender){
                     fs.rename(
                         startPath,
                         path.join(pathGender, fileName),
@@ -32,11 +33,10 @@ function InspectionAndReplacement(pathNeedGender, pathGender, gender) {
                         }
                     )
                 }
-
             });
         })
     })
 }
 
-InspectionAndReplacement(firstPath,secondPath,'female');
-InspectionAndReplacement(secondPath,firstPath,'male');
+inspectionAndReplacement(firstPath,secondPath,'female');
+inspectionAndReplacement(secondPath,firstPath,'male');
