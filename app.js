@@ -1,15 +1,42 @@
 const fs = require('fs');
 const path = require('path');
 
-console.log(__dirname);
-const firstPath = path.join(__dirname, 'files', 'boys', 'yura.json');
+const firstPath = path.join(__dirname, 'files', 'boys');
+const secondPath = path.join(__dirname, 'files', 'girls');
 
 
-fs.readFile(firstPath, (err, data) => {
-    if(err){
-        console.log(err);
-        return;
-    }
-    console.log(JSON.parse(data.toString()));
-});
+function InspectionAndReplacement(pathNeedGender, pathGender, gender) {
 
+    fs.readdir(pathNeedGender, (err, data) => {
+        if (err) {
+            console.log(err);
+            return;
+        }
+
+        data.forEach(fileName => {
+            const startPath = path.join(pathNeedGender, fileName);
+            fs.readFile(startPath , (err, data) => {
+                if (err) {
+                    console.log(err);
+                    return;
+                }
+
+                if(JSON.parse(data.toString()).gender === gender){
+                    fs.rename(
+                        startPath,
+                        path.join(pathGender, fileName),
+                        (err) => {
+                            if(err){
+                                console.log(err);
+                            }
+                        }
+                    )
+                }
+
+            });
+        })
+    })
+}
+
+InspectionAndReplacement(firstPath,secondPath,'female');
+InspectionAndReplacement(secondPath,firstPath,'male');
