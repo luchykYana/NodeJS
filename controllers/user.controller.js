@@ -26,7 +26,7 @@ module.exports = {
     createUser: (req, res) => {
         read(usersPath).then(users => {
             users.push({...req.body, id: users.length + 1});
-            res.json(`User with id ${users.length + 1} was added`);
+            res.json(`User with id ${users.length} was added`);
             write(usersPath, JSON.stringify(users));
         });
     },
@@ -45,7 +45,11 @@ module.exports = {
             return;
         }
 
-        users.splice(user_id - 1, 1);
+        users.filter(user => {
+            if(user.id.toString() === user_id){
+                users.splice(user_id - 1, 1);
+            }
+        })
 
         await write(usersPath, JSON.stringify(users));
 
