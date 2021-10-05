@@ -1,15 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+const express = require('express');
+const userRouter = require('./routes/user.router')
 
-console.log(__dirname);
-const firstPath = path.join(__dirname, 'files', 'boys', 'yura.json');
+const app = express();
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+app.use('/users', userRouter);
 
-
-fs.readFile(firstPath, (err, data) => {
-    if(err){
-        console.log(err);
-        return;
-    }
-    console.log(JSON.parse(data.toString()));
-});
-
+app.listen(5000, () => console.log('App listen 5000'));
