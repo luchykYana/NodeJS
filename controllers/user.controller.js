@@ -1,11 +1,11 @@
-const path = require('path');
+const path = require('path');                                                          // TODO додай ентер пісця цього рядка
 const {read, write} = require('../helper/users.helper');
 
-const usersPath = path.join('dataBase','users.json');
+const usersPath = path.join('dataBase','users.json');                                  // TODO додай ентер пісця цього рядка
 module.exports = {
     getUsers: (req,res) => {
         read(usersPath).then(users => {
-            res.json(users)
+            res.json(users)                                                            // TODO додай ";"
         });
     },
 
@@ -49,17 +49,20 @@ module.exports = {
         });
     },
 
-    deleteUser: (req,res) => {
+    deleteUser: async (req, res) => {
         const { user_id } = req.params;
 
-        read(usersPath).then(users => {
-            if(users.length < user_id){
-                res.json('User with such id doesn`t exist');
-            } else {
-                users.splice(user_id - 1, 1);
-                res.json(`User with id ${user_id} is deleted`);
-                write(usersPath, JSON.stringify(users));
-            }
-        });
+        const users = await read(usersPath);
+
+        if (users.length < user_id) {
+            res.json('User with such id doesn`t exist');
+            return;
+        }
+
+        users.splice(user_id - 1, 1);
+
+        await write(usersPath, JSON.stringify(users));
+
+        res.json(`User with id ${user_id} is deleted`);
     }
 }
