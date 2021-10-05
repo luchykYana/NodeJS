@@ -1,15 +1,17 @@
-const path = require('path');                                                          // TODO додай ентер пісця цього рядка
+const path = require('path');
+
 const {read, write} = require('../helper/users.helper');
 
-const usersPath = path.join('dataBase','users.json');                                  // TODO додай ентер пісця цього рядка
+const usersPath = path.join('dataBase','users.json');
+
 module.exports = {
-    getUsers: (req,res) => {
+    getUsers: (req, res) => {
         read(usersPath).then(users => {
-            res.json(users)                                                            // TODO додай ";"
+            res.json(users);
         });
     },
 
-    getUserById: (req,res) => {
+    getUserById: (req, res) => {
         const { user_id } = req.params;
 
         read(usersPath).then(users => {
@@ -21,15 +23,7 @@ module.exports = {
         });
     },
 
-    createUsers: (req,res) => {
-        read(usersPath).then(users => {
-            users = req.body;
-            res.json(`User with id ${users.length + 1} was added`);
-            write(usersPath, JSON.stringify(users));
-        });
-    },
-
-    createUser: (req,res) => {
+    createUser: (req, res) => {
         read(usersPath).then(users => {
             users.push({...req.body, id: users.length + 1});
             res.json(`User with id ${users.length + 1} was added`);
@@ -37,16 +31,8 @@ module.exports = {
         });
     },
 
-    updateUser: (req,res) => {
+    updateUser: (req, res) => {
         res.json('UPDATE!');
-    },
-
-    deleteUsers: (req,res) => {
-        read(usersPath).then(users => {
-            users = [];
-            res.json(`All users are deleted`);
-            write(usersPath, JSON.stringify(users));
-        });
     },
 
     deleteUser: async (req, res) => {
