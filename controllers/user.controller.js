@@ -5,33 +5,35 @@ const {read, write} = require('../helper/users.helper');
 const usersPath = path.join('dataBase','users.json');
 
 module.exports = {
-    getUsers: (req, res) => {
-        read(usersPath).then(users => {
-            res.json(users);
-        });
+    getUsers: async (req, res) => {
+        const users = await read(usersPath);
+
+        res.json(users);
     },
 
-    getUserById: (req, res) => {
+    getUserById: async (req, res) => {
         const { user_id } = req.params;
 
-        read(usersPath).then(users => {
-            if(users.length < user_id){
-                res.json('User with such id doesn`t exist');
-            } else {
-                res.json(users[user_id - 1]);
-            }
-        });
+        const users = await read(usersPath);
+
+        if(users.length < user_id){
+            res.json('User with such id doesn`t exist');
+        } else {
+            res.json(users[user_id - 1]);
+        }
     },
 
-    createUser: (req, res) => {
-        read(usersPath).then(users => {
-            users.push({...req.body, id: users.length + 1});
-            res.json(`User with id ${users.length} was added`);
-            write(usersPath, JSON.stringify(users));
-        });
+    createUser: async (req, res) => {
+        const users = await read(usersPath);
+        users.push({...req.body, id: users.length + 1});
+
+        await write(usersPath, JSON.stringify(users));
+
+        res.json(`User with id ${users.length} was added`);
     },
 
     updateUser: (req, res) => {
+
         res.json('UPDATE!');
     },
 
@@ -45,13 +47,9 @@ module.exports = {
             return;
         }
 
-        users.filter(user => {
-            if(user.id.toString() === user_id){
-                users.splice(user_id - 1, 1);
-            }
-        })
+        const foundUsers = users.filter(user => user.id !== +user_id);
 
-        await write(usersPath, JSON.stringify(users));
+        await write(usersPath, JSON.stringify(foundUsers));
 
         res.json(`User with id ${user_id} is deleted`);
     }
