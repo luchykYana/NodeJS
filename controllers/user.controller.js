@@ -29,11 +29,13 @@ module.exports = {
     createUser: async (req, res) => {
         const users = await read(usersPath);
 
-        users.push({...req.body, id: users.length + 1});
+        const userId = users[users.length-1].id + 1;
+
+        users.push({...req.body, id: userId});
 
         await write(usersPath, users);
 
-        res.json(`User with id ${users.length} was added`);
+        res.json(`User with id ${userId} was added`);
     },
 
     updateUser: async (req, res) => {
