@@ -16,25 +16,28 @@ module.exports = {
 
         const users = await read(usersPath);
 
-        if(users.length < user_id){
+        const user = users.find(u => u.id === +user_id);
+
+        if (!user){
             res.json('User with such id doesn`t exist');
-        } else {
-            res.json(users[user_id - 1]);
+            return;
         }
+
+        res.json(user);
     },
 
     createUser: async (req, res) => {
         const users = await read(usersPath);
+
         users.push({...req.body, id: users.length + 1});
 
-        await write(usersPath, JSON.stringify(users));
+        await write(usersPath, users);
 
         res.json(`User with id ${users.length} was added`);
     },
 
     updateUser: (req, res) => {
-
-        res.json('UPDATE!');
+        res.json('UPDATE!');                             // TODO дороби
     },
 
     deleteUser: async (req, res) => {
@@ -42,14 +45,16 @@ module.exports = {
 
         const users = await read(usersPath);
 
-        if (users.length < user_id) {
+        const user = users.find(u => u.id === +user_id);
+
+        if (!user) {
             res.json('User with such id doesn`t exist');
             return;
         }
 
         const foundUsers = users.filter(user => user.id !== +user_id);
 
-        await write(usersPath, JSON.stringify(foundUsers));
+        await write(usersPath, foundUsers);
 
         res.json(`User with id ${user_id} is deleted`);
     }
