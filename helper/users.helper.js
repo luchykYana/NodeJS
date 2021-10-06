@@ -10,7 +10,7 @@ async function read(path){
 }
 
 async function write(path, data){
-    await fs.writeFile(path, `${data}`, (err) => {
+    await fs.writeFile(path, JSON.stringify(data), (err) => {   // TODO роби stringify тут щоб не писати постійно при виклику write
         if (err) {
             console.log(err);
         }
