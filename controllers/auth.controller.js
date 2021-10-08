@@ -1,8 +1,8 @@
 module.exports = {
     getLogin: (req, res) => {
-        try{
+        try {
             res.json(req.user);
-        } catch (e){
+        } catch (e) {
             res.json(e.message);
         }
     }

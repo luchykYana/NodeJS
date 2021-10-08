@@ -3,9 +3,9 @@ const User = require('../dataBase/User');
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
         try {
-            const { email } = req.body;
+            const {email} = req.body;
 
-            const userByEmail = await User.findOne({ email });
+            const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
                 throw new Error('Email already exists');
@@ -19,11 +19,11 @@ module.exports = {
 
     checkUserForLoginMiddleware: async (req, res, next) => {
         try {
-            const { email, password } = req.body;
+            const {email, password} = req.body;
 
-            const userByPassword = await User.findOne({ email, password });
+            const userByPassword = await User.findOne({email, password});
 
-            if (!userByPassword){
+            if (!userByPassword) {
                 throw new Error('Email or password not exists');
             }
 
@@ -36,14 +36,16 @@ module.exports = {
     },
 
     checkUserById: async (req, res, next) => {
-        try{
-            const { user_id } = req.params;
+        try {
+            const {user_id} = req.params;
 
             const user = await User.findById(user_id);
 
-            if(!user){
+            if (!user) {
                 throw new Error('User with this id does not exist');
             }
+
+            req.user = user;
 
             next();
         } catch (e) {
