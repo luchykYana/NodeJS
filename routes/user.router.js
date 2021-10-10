@@ -22,7 +22,7 @@ router.get(
 );
 router.put(
     '/:user_id',
-    userMiddleware.isUserBodyValid,
+    userMiddleware.isUserBodyValidForUpdate,
     userMiddleware.checkUserById,
     userController.updateUser
 );

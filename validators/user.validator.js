@@ -25,6 +25,17 @@ const createUserValidator = Joi.object({
         .regex(PASSWORD_REGEXP),
 });
 
+const updateUserValidator = Joi.object({
+    name: Joi
+        .string()
+        .alphanum()
+        .min(2)
+        .max(30)
+        .trim()
+        .required(),
+});
+
 module.exports = {
-    createUserValidator
+    createUserValidator,
+    updateUserValidator
 };
