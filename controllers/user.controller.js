@@ -5,8 +5,7 @@ const userUtil = require('../util/user.util');
 module.exports = {
     getUsers: async (req, res) => {
         try {
-            const users = await User.find()
-                .lean();
+            const users = await User.find();
 
             const normalizedUsers = [];
 
@@ -20,12 +19,9 @@ module.exports = {
         }
     },
 
-    getUserById: async (req, res) => {
+    getUserById: (req, res) => {
         try {
-            const user = await User.findById(req.id)
-                .lean();
-
-            const normalizedUser = userUtil.userNormalisator(user);
+            const normalizedUser = userUtil.userNormalisator(req.user);
 
             res.json(normalizedUser);
         } catch (e) {
@@ -35,7 +31,9 @@ module.exports = {
 
     createUser: async (req, res) => {
         try {
-            const hashedPassword = await passwordService.hash(req.body.password);
+            const {password} = req.body;
+
+            const hashedPassword = await passwordService.hash(password);
 
             const newUser = await User.create({...req.body, password: hashedPassword});
 
@@ -50,8 +48,9 @@ module.exports = {
     updateUser: async (req, res) => {
         try {
             const {user_id} = req.params;
+            const {name} = req.body;
 
-            const user = await User.findByIdAndUpdate(user_id, {name: req.body.name}, {new: true});
+            const user = await User.findByIdAndUpdate(user_id, {name}, {new: true});
 
             const normalizedUser = userUtil.userNormalisator(user);
 

@@ -49,7 +49,7 @@ module.exports = {
                 throw new Error('User with this id does not exist');
             }
 
-            req.id = user_id;
+            req.user = user;
 
             next();
         } catch (e) {
@@ -63,6 +63,22 @@ module.exports = {
 
             if (error) {
                 throw new Error(error.details[0].message);
+            }
+
+            req.body = value;
+
+            next();
+        } catch (e) {
+            res.json(e.message);
+        }
+    },
+
+    isUserBodyValidForLogin: (req, res, next) => {
+        try {
+            const {error, value} = userValidator.loginUserValidator.validate(req.body);
+
+            if (error) {
+                throw new Error('Wrong email or password');
             }
 
             req.body = value;

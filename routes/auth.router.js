@@ -6,7 +6,7 @@ const userMiddleware = require('../middlewares/user.middleware');
 
 router.post(
     '/login',
-    userMiddleware.isUserBodyValid,
+    userMiddleware.isUserBodyValidForLogin,
     userMiddleware.checkUserForLoginMiddleware,
     loginController.getLogin
 );
