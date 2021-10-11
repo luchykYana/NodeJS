@@ -5,7 +5,9 @@ module.exports = {
             '__v'
         ];
 
-        fieldsToRemove.forEach((field) => {userToNormalize[field] = undefined;});
+        fieldsToRemove.forEach((field) => {
+            userToNormalize[field] = undefined;
+        });
 
         const userNorm = JSON.parse(JSON.stringify(userToNormalize));
 
