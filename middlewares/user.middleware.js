@@ -2,7 +2,7 @@ const User = require('../dataBase/User');
 const userValidator = require('../validators/user.validator');
 const passwordService = require('../service/password.service');
 const ErrorHandler = require("../errors/ErrorHandler");
-const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID} = require("../errors/custom-errors");
+const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN} = require("../errors/custom-errors");
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
@@ -101,6 +101,20 @@ module.exports = {
             }
 
             req.body = value;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkUserRole: (roleArr = []) => (req, res, next) => {
+        try {
+            const {role} = req.user;
+
+            if (!roleArr.includes(role)) {
+                throw new ErrorHandler(FORBIDDEN.message, FORBIDDEN.code);
+            }
 
             next();
         } catch (e) {

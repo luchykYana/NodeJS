@@ -12,5 +12,10 @@ module.exports = {
     NOT_FOUND_BY_ID: {
         message: 'User with this id does not exist',
         code: 404
+    },
+
+    FORBIDDEN: {
+        message: 'Access denied',
+        code: 403
     }
 };
