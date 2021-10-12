@@ -1,14 +1,14 @@
 const User = require('../dataBase/User');
 const userValidator = require('../validators/user.validator');
 const passwordService = require('../service/password.service');
-const ErrorHandler = require("../errors/ErrorHandler");
-const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN} = require("../errors/custom-errors");
+const {errors, ErrorHandler} = require('../errors');
+
+const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN} = errors;
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
         try {
             const {email} = req.body;
-            const e = 2;
 
             const userByEmail = await User.findOne({email});
 
