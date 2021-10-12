@@ -1,9 +1,8 @@
 const User = require('../dataBase/User');
-const userValidator = require('../validators/user.validator');
 const passwordService = require('../service/password.service');
 const {errors, ErrorHandler} = require('../errors');
 
-const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN} = errors;
+const {BAD_REQUEST_USER_REGISTERED, NOT_VALID_BODY, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN} = errors;
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
@@ -60,44 +59,20 @@ module.exports = {
         }
     },
 
-    isUserBodyValid: (req, res, next) => {
+    isUserBodyValid: (validator, isLogin) => (req, res, next) => {
         try {
-            const {error, value} = userValidator.createUserValidator.validate(req.body);
+            const {error, value} = validator.validate(req.body);
 
             if (error) {
-                throw new Error(error.details[0].message);
-            }
+                let message;
 
-            req.body = value;
+                if (isLogin) {
+                    message = NOT_VALID_BODY.message;
+                } else {
+                    message = error.details[0].message;
+                }
 
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    isUserBodyValidForLogin: (req, res, next) => {
-        try {
-            const {error, value} = userValidator.loginUserValidator.validate(req.body);
-
-            if (error) {
-                throw new ErrorHandler(NOT_FOUND.message, NOT_FOUND.code);
-            }
-
-            req.body = value;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    isUserBodyValidForUpdate: (req, res, next) => {
-        try {
-            const {error, value} = userValidator.updateUserValidator.validate(req.body);
-
-            if (error) {
-                throw new Error(error.details[0].message);
+                throw new ErrorHandler(message, NOT_VALID_BODY.code);
             }
 
             req.body = value;

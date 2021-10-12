@@ -3,6 +3,8 @@ const router = require('express')
 
 const {userController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
+const {updateUserValidator, createUserValidator} = require('../validators/user.validator');
+const {userRoles} = require("../configs");
 
 router.get(
     '/',
@@ -10,7 +12,7 @@ router.get(
 );
 router.post(
     '/',
-    userMiddleware.isUserBodyValid,
+    userMiddleware.isUserBodyValid(createUserValidator),
     userMiddleware.checkUserByEmailMiddleware,
     userController.createUser
 );
@@ -22,13 +24,17 @@ router.get(
 );
 router.put(
     '/:user_id',
-    userMiddleware.isUserBodyValidForUpdate,
+    userMiddleware.isUserBodyValid(updateUserValidator),
     userMiddleware.checkUserById,
     userController.updateUser
 );
 router.delete(
     '/:user_id',
     userMiddleware.checkUserById,
+    userMiddleware.checkUserRole([
+        userRoles.USER,
+        userRoles.ADMIN
+    ]),
     userController.deleteUser
 );
 

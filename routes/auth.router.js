@@ -3,16 +3,12 @@ const router = require('express')
 
 const {authController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
-const {userRoles} = require('../configs');
+const {loginUserValidator} = require('../validators/user.validator');
 
 router.post(
     '/login',
-    userMiddleware.isUserBodyValidForLogin,
+    userMiddleware.isUserBodyValid(loginUserValidator, true),
     userMiddleware.checkUserForLoginMiddleware,
-    userMiddleware.checkUserRole([
-        userRoles.ADMIN,
-        userRoles.MANAGER
-    ]),
     authController.getLogin
 );
 
