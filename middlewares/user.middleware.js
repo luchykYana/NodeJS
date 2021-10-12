@@ -1,21 +1,24 @@
 const User = require('../dataBase/User');
 const userValidator = require('../validators/user.validator');
 const passwordService = require('../service/password.service');
+const ErrorHandler = require("../errors/ErrorHandler");
+const {BAD_REQUEST_USER_REGISTERED, NOT_FOUND, NOT_FOUND_BY_ID} = require("../errors/custom-errors");
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
         try {
             const {email} = req.body;
+            const e = 2;
 
             const userByEmail = await User.findOne({email});
 
             if (userByEmail) {
-                throw new Error('Email already exists');
+                throw new ErrorHandler(BAD_REQUEST_USER_REGISTERED.message, BAD_REQUEST_USER_REGISTERED.code);
             }
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -26,7 +29,7 @@ module.exports = {
             const user = await User.findOne({email});
 
             if (!user) {
-                throw new Error('Wrong email or password');
+                throw new ErrorHandler(NOT_FOUND.message, NOT_FOUND.code);
             }
 
             await passwordService.compare(password, user.password);
@@ -35,7 +38,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -46,14 +49,14 @@ module.exports = {
             const user = await User.findById(user_id);
 
             if (!user) {
-                throw new Error('User with this id does not exist');
+                throw new ErrorHandler(NOT_FOUND_BY_ID.message, NOT_FOUND_BY_ID.code);
             }
 
             req.user = user;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -69,7 +72,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -78,14 +81,14 @@ module.exports = {
             const {error, value} = userValidator.loginUserValidator.validate(req.body);
 
             if (error) {
-                throw new Error('Wrong email or password');
+                throw new ErrorHandler(NOT_FOUND.message, NOT_FOUND.code);
             }
 
             req.body = value;
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     },
 
@@ -101,7 +104,7 @@ module.exports = {
 
             next();
         } catch (e) {
-            res.json(e.message);
+            next(e);
         }
     }
 };

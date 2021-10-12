@@ -1,13 +1,15 @@
 module.exports = {
-    env: {
-        browser: true,
-        commonjs: true,
-        es2021: true
+    'env': {
+        'commonjs': true,
+        'es2021': true,
     },
-    parserOptions: {
-        ecmaVersion: 12,
+    'extends': [
+        'google',
+    ],
+    'parserOptions': {
+        'ecmaVersion': 13,
     },
-    rules: {
+    'rules': {
         'array-bracket-newline': [
             'error',
             {minItems: 2}

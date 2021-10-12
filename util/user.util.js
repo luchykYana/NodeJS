@@ -1,14 +1,14 @@
 module.exports = {
-    userNormalisator: (userToNormalize = {}) => {
+    userNormalisator: (userToNormalize) => {
         const fieldsToRemove = [
             'password',
             '__v'
         ];
 
-        const userNorm = JSON.parse(JSON.stringify(userToNormalize));
+        userToNormalize = userToNormalize.toObject();
 
-        fieldsToRemove.forEach((field) => delete userNorm[field]);
+        fieldsToRemove.forEach((field) => delete userToNormalize[field]);
 
-        return userNorm;
+        return userToNormalize;
     }
 };
