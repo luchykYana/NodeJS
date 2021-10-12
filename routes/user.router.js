@@ -4,7 +4,7 @@ const router = require('express')
 const {userController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
 const {updateUserValidator, createUserValidator} = require('../validators/user.validator');
-const {userRoles} = require("../configs");
+const {userRoles} = require('../configs');
 
 router.get(
     '/',
