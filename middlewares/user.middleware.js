@@ -98,7 +98,7 @@ module.exports = {
         }
     },
 
-    checkAccessToken: async (req, res, next) => {
+    checkToken: (tokenType) => async (req, res, next) => {
         try {
             const token = req.get(constants.AUTHORIZATION);
 
@@ -106,43 +106,28 @@ module.exports = {
                 throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
             }
 
-            await jwtService.verifyToken(token);
+            await jwtService.verifyToken(token, tokenType);
 
-            const tokenResponse = await O_Auth
-                .findOne({access_token: token})
-                .populate('user_id');
+            let tokenResponse;
+
+            if (tokenType === tokenTypes.ACCESS) {
+                tokenResponse = await O_Auth
+                    .findOne({access_token: token})
+                    .populate('user_id');
+
+            } else {
+                tokenResponse = await O_Auth
+                    .findOne({refresh_token: token})
+                    .populate('user_id');
+            }
 
             if (!tokenResponse) {
                 throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
             }
 
-            req.user = tokenResponse.user_id;
-
-            next();
-        } catch (e) {
-            next(e);
-        }
-    },
-
-    checkRefreshToken: async (req, res, next) => {
-        try {
-            const token = req.get(constants.AUTHORIZATION);
-
-            if (!token) {
-                throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
+            if (tokenType === tokenTypes.REFRESH) {
+                await O_Auth.remove({refresh_token: token});
             }
-
-            await jwtService.verifyToken(token, tokenTypes.REFRESH);
-
-            const tokenResponse = await O_Auth
-                .findOne({refresh_token: token})
-                .populate('user_id');
-
-            if (!tokenResponse) {
-                throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
-            }
-
-            await O_Auth.remove({refresh_token: token});
 
             req.user = tokenResponse.user_id;
 

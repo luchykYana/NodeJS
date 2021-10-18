@@ -4,6 +4,7 @@ const router = require('express')
 const {authController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
 const {loginUserValidator} = require('../validators/user.validator');
+const {tokenTypes} = require('../configs');
 
 router.post(
     '/login',
@@ -14,7 +15,7 @@ router.post(
 
 router.post(
     '/refresh',
-    userMiddleware.checkRefreshToken,
+    userMiddleware.checkToken(tokenTypes.REFRESH),
     authController.getLogin
 );
 

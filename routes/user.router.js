@@ -4,7 +4,7 @@ const router = require('express')
 const {userController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
 const {updateUserValidator, createUserValidator} = require('../validators/user.validator');
-const {userRoles} = require('../configs');
+const {userRoles, tokenTypes} = require('../configs');
 
 router.get(
     '/',
@@ -35,7 +35,7 @@ router.delete(
         userRoles.USER,
         userRoles.ADMIN
     ]),
-    userMiddleware.checkAccessToken,
+    userMiddleware.checkToken(tokenTypes.ACCESS),
     userController.deleteUser
 );
 
