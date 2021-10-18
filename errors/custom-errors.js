@@ -9,6 +9,11 @@ module.exports = {
         code: 400
     },
 
+    NOT_VALID_TOKEN: {
+        message: 'Invalid token',
+        code: 401
+    },
+
     FORBIDDEN: {
         message: 'Access denied',
         code: 403

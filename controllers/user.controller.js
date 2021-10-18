@@ -1,5 +1,5 @@
-const User = require('../dataBase/User');
-const passwordService = require('../service/password.service');
+const {User} = require('../dataBase');
+const {passwordService} = require('../service');
 const userUtil = require('../util/user.util');
 
 module.exports = {

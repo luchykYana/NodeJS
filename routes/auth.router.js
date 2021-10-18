@@ -12,4 +12,10 @@ router.post(
     authController.getLogin
 );
 
+router.post(
+    '/refresh',
+    userMiddleware.checkRefreshToken,
+    authController.getLogin
+);
+
 module.exports = router;

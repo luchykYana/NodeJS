@@ -35,6 +35,7 @@ router.delete(
         userRoles.USER,
         userRoles.ADMIN
     ]),
+    userMiddleware.checkAccessToken,
     userController.deleteUser
 );
 
