@@ -24,18 +24,19 @@ router.get(
 );
 router.put(
     '/:user_id',
+    userMiddleware.checkToken(tokenTypes.ACCESS),
     userMiddleware.isUserBodyValid(updateUserValidator),
     userMiddleware.checkUserById,
     userController.updateUser
 );
 router.delete(
     '/:user_id',
+    userMiddleware.checkToken(tokenTypes.ACCESS),
     userMiddleware.checkUserById,
     userMiddleware.checkUserRole([
         userRoles.USER,
         userRoles.ADMIN
     ]),
-    userMiddleware.checkToken(tokenTypes.ACCESS),
     userController.deleteUser
 );
 

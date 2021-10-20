@@ -13,6 +13,11 @@ router.post(
     authController.getLogin
 );
 
+router.post('/logout',
+    userMiddleware.checkToken(tokenTypes.ACCESS),
+    authController.getLogout
+);
+
 router.post(
     '/refresh',
     userMiddleware.checkToken(tokenTypes.REFRESH),

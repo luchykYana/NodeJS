@@ -3,7 +3,7 @@ const {passwordService, jwtService} = require('../service');
 const {errors, ErrorHandler} = require('../errors');
 const {constants, tokenTypes} = require('../configs');
 
-const {BAD_REQUEST_USER_REGISTERED, NOT_VALID_BODY, NOT_FOUND, NOT_FOUND_BY_ID, FORBIDDEN, NOT_VALID_TOKEN} = errors;
+const {BAD_REQUEST_USER_REGISTERED, NOT_VALID_BODY, NOT_FOUND_BY_ID, FORBIDDEN, NOT_VALID_TOKEN} = errors;
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
@@ -29,7 +29,7 @@ module.exports = {
             const user = await User.findOne({email});
 
             if (!user) {
-                throw new ErrorHandler(NOT_FOUND.message, NOT_FOUND.code);
+                throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
             }
 
             await passwordService.compare(password, user.password);

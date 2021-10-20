@@ -19,11 +19,6 @@ module.exports = {
         code: 403
     },
 
-    NOT_FOUND: {
-        message: 'Wrong email or password',
-        code: 404
-    },
-
     NOT_FOUND_BY_ID: {
         message: 'User with this id does not exist',
         code: 404
