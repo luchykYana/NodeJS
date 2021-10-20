@@ -102,24 +102,17 @@ module.exports = {
         try {
             const token = req.get(constants.AUTHORIZATION);
 
+            const tokenKey = `${tokenType}_token`;
+
             if (!token) {
                 throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
             }
 
             await jwtService.verifyToken(token, tokenType);
 
-            let tokenResponse;
-
-            if (tokenType === tokenTypes.ACCESS) {
-                tokenResponse = await O_Auth
-                    .findOne({access_token: token})
-                    .populate('user_id');
-
-            } else {
-                tokenResponse = await O_Auth
-                    .findOne({refresh_token: token})
-                    .populate('user_id');
-            }
+            const tokenResponse = await O_Auth
+                .findOne({[tokenKey]: token})
+                .populate('user_id');
 
             if (!tokenResponse) {
                 throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
