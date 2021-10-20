@@ -1,7 +1,7 @@
 const userUtil = require('../util/user.util');
 const {jwtService, emailService} = require('../service');
 const {O_Auth} = require('../dataBase');
-const {constants, tokenTypes} = require('../configs');
+const {constants, tokenTypes, emailActions} = require('../configs');
 
 module.exports = {
     getLogin: async (req, res, next) => {
@@ -10,7 +10,7 @@ module.exports = {
 
             const tokenPair = jwtService.generateTokenPair();
 
-            await emailService.sendMail(user.email, 'hello', {userName: user.name});
+            await emailService.sendMail(user.email, emailActions.HELLO, {userName: user.name});
 
             const normalizedUser = userUtil.userNormalisator(user);
 
