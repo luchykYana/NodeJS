@@ -1,9 +1,10 @@
-const {User, O_Auth} = require('../dataBase');
-const {passwordService, jwtService} = require('../service');
+const {User, O_Auth, ActionToken} = require('../dataBase');
+const {jwtService} = require('../service');
 const {errors, ErrorHandler} = require('../errors');
-const {constants, tokenTypes} = require('../configs');
+const {constants, tokenTypes, actionTokenTypes} = require('../configs');
 
 const {BAD_REQUEST_USER_REGISTERED, NOT_VALID_BODY, NOT_FOUND_BY_ID, FORBIDDEN, NOT_VALID_TOKEN} = errors;
+const {FORGOT_PASSWORD} = actionTokenTypes;
 
 module.exports = {
     checkUserByEmailMiddleware: async (req, res, next) => {
@@ -32,7 +33,7 @@ module.exports = {
                 throw new ErrorHandler(NOT_VALID_BODY.message, NOT_VALID_BODY.code);
             }
 
-            await passwordService.compare(password, user.password);
+            await user.comparePassword(password);
 
             req.user = user;
 
@@ -110,9 +111,7 @@ module.exports = {
 
             await jwtService.verifyToken(token, tokenType);
 
-            const tokenResponse = await O_Auth
-                .findOne({[tokenKey]: token})
-                .populate('user_id');
+            const tokenResponse = await O_Auth.findOne({[tokenKey]: token});
 
             if (!tokenResponse) {
                 throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
@@ -120,6 +119,30 @@ module.exports = {
 
             if (tokenType === tokenTypes.REFRESH) {
                 await O_Auth.deleteOne({refresh_token: token});
+            }
+
+            req.user = tokenResponse.user_id;
+
+            next();
+        } catch (e) {
+            next(e);
+        }
+    },
+
+    checkActionToken: async (req, res, next) => {
+        try {
+            const token = req.get(constants.AUTHORIZATION);
+
+            if (!token) {
+                throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
+            }
+
+            await jwtService.verifyActionToken(token);
+
+            const tokenResponse = await ActionToken.findOne({token, token_type: FORGOT_PASSWORD});
+
+            if (!tokenResponse) {
+                throw new ErrorHandler(NOT_VALID_TOKEN.message, NOT_VALID_TOKEN.code);
             }
 
             req.user = tokenResponse.user_id;

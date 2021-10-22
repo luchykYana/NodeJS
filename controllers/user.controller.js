@@ -1,6 +1,5 @@
 const {User, O_Auth} = require('../dataBase');
-const {passwordService, emailService} = require('../service');
-const userUtil = require('../util/user.util');
+const {emailService} = require('../service');
 const {emailActions} = require('../configs');
 
 module.exports = {
@@ -11,7 +10,7 @@ module.exports = {
             const normalizedUsers = [];
 
             users.forEach((user, index) => {
-                normalizedUsers[index] = userUtil.userNormalisator(user);
+                normalizedUsers[index] = user.normaliseUser();
             });
 
             res.json(normalizedUsers);
@@ -22,7 +21,7 @@ module.exports = {
 
     getUserById: (req, res, next) => {
         try {
-            const normalizedUser = userUtil.userNormalisator(req.user);
+            const normalizedUser = req.normaliseUser();
 
             res.json(normalizedUser);
         } catch (e) {
@@ -32,15 +31,13 @@ module.exports = {
 
     createUser: async (req, res, next) => {
         try {
-            const {password, name} = req.body;
+            const user = req.body;
 
-            const hashedPassword = await passwordService.hash(password);
+            const newUser = await User.createUserWithHashPassword(user);
 
-            await emailService.sendMail(req.body.email, emailActions.WELCOME, {userName: name});
+            await emailService.sendMail(user.email, emailActions.WELCOME, {userName: user.name});
 
-            const newUser = await User.create({...req.body, password: hashedPassword});
-
-            const normalizedUser = userUtil.userNormalisator(newUser);
+            const normalizedUser = newUser.normaliseUser();
 
             res.json(normalizedUser);
         } catch (e) {
@@ -55,7 +52,7 @@ module.exports = {
 
             const user = await User.findByIdAndUpdate(user_id, {name}, {new: true});
 
-            const normalizedUser = userUtil.userNormalisator(user);
+            const normalizedUser = user.normaliseUser();
 
             res.json(normalizedUser);
         } catch (e) {

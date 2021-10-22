@@ -24,4 +24,8 @@ router.post(
     authController.getLogin
 );
 
+router.post('/password/forgot', authController.sendMailForgotPassword);
+
+router.put('/password/forgot', userMiddleware.checkActionToken, authController.setNewPasswordAfterForgot);
+
 module.exports = router;

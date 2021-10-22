@@ -19,6 +19,10 @@ const oAuthSchema = new Schema({
         ref: userRoles.USER
     }
 
-}, {timestamps: true});
+}, {timestamps: true, toObject: {virtuals: true}, toJSON: {virtuals: true}});
+
+oAuthSchema.pre('findOne', function() {
+    this.populate('user_id');
+});
 
 module.exports = model(tokenTypes.O_AUTH, oAuthSchema);

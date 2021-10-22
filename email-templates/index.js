@@ -13,4 +13,8 @@ module.exports = {
         templateName: 'hello',
         subject: 'Hello!'
     },
+    [emailActions.FORGOT_PASSWORD]: {
+        templateName: 'forgot-password',
+        subject: 'Everybody forgot something! Dont worry)'
+    }
 };

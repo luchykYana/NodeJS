@@ -1,5 +1,6 @@
 module.exports = {
-    WELCOME: 'welcome',
+    FORGOT_PASSWORD: 'forgot-password',
     GOODBYE: 'goodbye',
-    HELLO: 'hello'
+    HELLO: 'hello',
+    WELCOME: 'welcome'
 };

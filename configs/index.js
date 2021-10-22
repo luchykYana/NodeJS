@@ -1,8 +1,9 @@
 module.exports = {
+    actionTokenTypes: require('./action-token-type.enum'),
     config: require('./config'),
     constants: require('./constants'),
-    userRoles: require('./user-roles.enum'),
+    emailActions: require('./email-action.enum'),
     tokenTypes: require('./token-type.enum'),
-    emailActions: require('./email-action.enum')
+    userRoles: require('./user-roles.enum')
 };
 

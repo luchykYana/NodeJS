@@ -24,8 +24,18 @@ module.exports = {
         code: 404
     },
 
+    NOT_FOUND_BY_EMAIL: {
+        message: 'User with this email does not exist',
+        code: 404
+    },
+
     NOT_FOUND_EMAIL_TEMPLATE: {
         message: 'Email template does not exist',
         code: 404
+    },
+
+    WRONG_TOKEN_TYPE: {
+        message: 'Wrong token type',
+        code: 500
     }
 };
