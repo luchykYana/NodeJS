@@ -19,6 +19,11 @@ module.exports = {
         code: 403
     },
 
+    CORS_IS_FORBIDDEN: {
+        message: 'CORS is not allowed',
+        code: 403
+    },
+
     NOT_FOUND_BY_ID: {
         message: 'User with this id does not exist',
         code: 404
