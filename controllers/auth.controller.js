@@ -79,11 +79,9 @@ module.exports = {
 
             const hashedPassword = await passwordService.hash(newPassword);
 
-            const user = await User.findByIdAndUpdate(userObject.id, {password: hashedPassword}, {new: true});
+            await User.findByIdAndUpdate(userObject.id, {password: hashedPassword}, {new: true});
 
-            const normalizedUser = user.normaliseUser();
-
-            res.json(normalizedUser);
+            res.json('Password is changed');
         } catch (e) {
             next(e);
         }

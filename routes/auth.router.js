@@ -3,7 +3,7 @@ const router = require('express')
 
 const {authController} = require('../controllers');
 const userMiddleware = require('../middlewares/user.middleware');
-const {loginUserValidator} = require('../validators/user.validator');
+const {loginUserValidator, emailValidator, passwordValidator} = require('../validators/user.validator');
 const {tokenTypes} = require('../configs');
 
 router.post(
@@ -24,8 +24,13 @@ router.post(
     authController.getLogin
 );
 
-router.post('/password/forgot', authController.sendMailForgotPassword);
+router.post('/password/forgot',
+    userMiddleware.isUserBodyValid(emailValidator, true),
+    authController.sendMailForgotPassword);
 
-router.put('/password/forgot', userMiddleware.checkActionToken, authController.setNewPasswordAfterForgot);
+router.put('/password/forgot',
+    userMiddleware.isUserBodyValid(passwordValidator, true),
+    userMiddleware.checkActionToken,
+    authController.setNewPasswordAfterForgot);
 
 module.exports = router;
