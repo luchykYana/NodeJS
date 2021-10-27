@@ -60,19 +60,8 @@
           "400": {
             "description": "Error",
             "schema": {
-              "type": "object",
-              "properties": {
-                "msg": {
-                  "type": "object",
-                  "example": "Wrong email or password"
-                },
-                "code": {
-                  "type": "number",
-                  "example": 400
-                }
-              }
+              "$ref": "#/definitions/commonError400"
             }
-
           }
         }
       },
@@ -153,9 +142,8 @@
           "400": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/commonError"
+              "$ref": "#/definitions/commonError400"
             }
-
           }
         }
       }
@@ -207,7 +195,7 @@
               }
             }
           },
-          "400": {
+          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/commonError404"
@@ -277,12 +265,17 @@
               }
             }
           },
-          "400": {
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError401"
+            }
+          },
+          "404": {
             "description": "Error",
             "schema": {
               "$ref": "#/definitions/commonError404"
             }
-
           }
         }
       },
@@ -340,17 +333,22 @@
               }
             }
           },
-          "400": {
+          "401": {
             "description": "Error",
             "schema": {
-              "$ref": "#/definitions/commonError"
+              "$ref": "#/definitions/commonError401"
             }
-
-          }
+          },
+          "404": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError404"
+            }
         }
       }
     }
-  },
+  }
+},
   "definitions": {
     "singleUser": {
       "type": "object",
@@ -388,6 +386,19 @@
         "code": {
           "type": "number",
           "example": 400
+        }
+      }
+    },
+    "commonError401": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "object",
+          "example": "Invalid token"
+        },
+        "code": {
+          "type": "number",
+          "example": 401
         }
       }
     },
