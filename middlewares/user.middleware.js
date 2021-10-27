@@ -49,6 +49,8 @@ module.exports = {
 
             const user = await User.findById(user_id);
 
+            console.log(user);
+
             if (!user) {
                 throw new ErrorHandler(NOT_FOUND_BY_ID.message, NOT_FOUND_BY_ID.code);
             }
@@ -63,6 +65,7 @@ module.exports = {
 
     isUserBodyValid: (validator, isLogin) => (req, res, next) => {
         try {
+
             const {error, value} = validator.validate(req.body);
 
             if (error) {

@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const swaggerUI = require('swagger-ui-express');
 
 require('dotenv').config();
 
@@ -11,6 +12,7 @@ const {userRouter, authRouter} = require('./routes');
 const {ErrorHandler, errors} = require('./errors');
 const checkDefaultData = require('./util/default-data.util');
 const startCron = require('./cron');
+const swaggerJson = require('./docs/swagger.json');
 
 const {MONGO_CONNECT_URL, PORT, NODE_ENV, ALLOWED_ORIGIN} = config;
 const {CORS_IS_FORBIDDEN} = errors;
@@ -35,6 +37,7 @@ if (NODE_ENV === 'dev') {
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
+app.use('/docs', swaggerUI.serve, swaggerUI.setup(swaggerJson));
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 // eslint-disable-next-line no-unused-vars

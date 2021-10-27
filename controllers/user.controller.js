@@ -1,11 +1,11 @@
 const {User, O_Auth} = require('../dataBase');
-const {emailService} = require('../service');
+const {emailService, userService} = require('../service');
 const {emailActions} = require('../configs');
 
 module.exports = {
     getUsers: async (req, res, next) => {
         try {
-            const users = await User.find();
+            const users = await userService.getAllUsers(req.query);
 
             const normalizedUsers = [];
 

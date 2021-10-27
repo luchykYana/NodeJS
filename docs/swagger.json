@@ -1,0 +1,268 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Node.js-OKTEN",
+    "version": "1.0",
+    "description": "Node.js project in OKTEN",
+    "contact": {
+      "name": "Yana Luchyk",
+      "email": "yanaluchyk@gmail.com"
+    }
+  },
+  "paths": {
+    "/users": {
+      "post": {
+        "tags": ["Users"],
+        "operationId": "createUser",
+        "description": "How to create user",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "formData",
+            "required": true,
+            "default": "Yana",
+            "type": "string"
+          },
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "default": "example@gmail.com",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "default": "12345678Example",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "in": "formData",
+            "default": "user",
+            "type": "string"
+          },
+          {
+            "name": "age",
+            "in": "formData",
+            "default": 18,
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User was created",
+            "schema": {
+              "$ref": "#/definitions/singleUser"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "object",
+                  "example": "Wrong email or password"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 400
+                }
+              }
+            }
+
+          }
+        }
+      },
+      "get": {
+        "tags": ["Users"],
+        "operationId": "getAllUsers",
+        "description": "How to get all users",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "default": 1,
+            "type": "number"
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "default": 20,
+            "type": "number"
+          },
+          {
+            "name": "age.lte",
+            "in": "query",
+            "default": 100,
+            "type": "number"
+          },
+          {
+            "name": "age.gte",
+            "in": "query",
+            "default": 0,
+            "type": "number"
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "default": "",
+            "type": "string"
+          },
+          {
+            "name": "role",
+            "in": "query",
+            "default": "user",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Users received",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "617921aa31e95274fda0887d",
+                    "description": "MongoDB ID"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Yana"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 18
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError"
+            }
+
+          }
+        }
+      }
+    },
+    "/users/{user_id}": {
+      "get": {
+        "tags": ["Users"],
+        "operationId": "getOneUser",
+        "description": "How to get one user",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "description": "This is `id` of user",
+            "default": "61797263ed2deb76cdeacb01",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User received",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "617921aa31e95274fda0887d",
+                    "description": "MongoDB ID"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Yana"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 18
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError"
+            }
+
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"]
+      },
+      "delete": {
+        "tags": ["Users"]
+      }
+    }
+  },
+  "definitions": {
+    "singleUser": {
+      "type": "object",
+      "properties": {
+        "_id": {
+          "type": "string",
+          "example": "617921aa31e95274fda0887d",
+          "description": "MongoDB ID"
+        },
+        "email": {
+          "type": "string",
+          "example": "example@gmail.com"
+        },
+        "name": {
+          "type": "string",
+          "example": "Yana"
+        },
+        "age": {
+          "type": "number",
+          "example": 18
+        },
+        "role": {
+          "type": "string",
+          "example": "user"
+        }
+      }
+    },
+    "commonError": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "object",
+          "example": "Wrong email or password"
+        },
+        "code": {
+          "type": "number",
+          "example": 400
+        }
+      }
+    }
+  }
+}

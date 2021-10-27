@@ -22,6 +22,8 @@ const createUserValidator = Joi.object({
         .string()
         .required()
         .regex(constants.PASSWORD_REGEXP),
+    age: Joi
+        .number()
 });
 
 const loginUserValidator = Joi.object({
