@@ -168,9 +168,142 @@
         "parameters": [
           {
             "name": "Authorization",
-            "in": "header",
+            "in": "path",
             "description": "This is `id` of user",
-            "default": "61797263ed2deb76cdeacb01",
+            "default": "",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User received",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "617921aa31e95274fda0887d",
+                    "description": "MongoDB ID"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Yana"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 18
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError404"
+            }
+
+          }
+        }
+      },
+      "put": {
+        "tags": ["Users"],
+        "operationId": "updateUser",
+        "description": "How to update user",
+        "parameters": [
+          {
+            "name": "action_token",
+            "in": "header",
+            "description": "This is `action_token` of user",
+            "required": true,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "Authorization",
+            "in": "path",
+            "description": "This is `id` of user",
+            "default": "",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "name",
+            "in": "formData",
+            "required": true,
+            "default": "Yana",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User received",
+            "schema": {
+              "type": "array",
+              "items": {
+                "properties": {
+                  "_id": {
+                    "type": "string",
+                    "example": "617921aa31e95274fda0887d",
+                    "description": "MongoDB ID"
+                  },
+                  "email": {
+                    "type": "string",
+                    "example": "example@gmail.com"
+                  },
+                  "name": {
+                    "type": "string",
+                    "example": "Yana"
+                  },
+                  "age": {
+                    "type": "number",
+                    "example": 18
+                  },
+                  "role": {
+                    "type": "string",
+                    "example": "user"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError404"
+            }
+
+          }
+        }
+      },
+      "delete": {
+        "tags": ["Users"],
+        "operationId": "deleteUser",
+        "description": "How to delete user",
+        "parameters": [
+          {
+            "name": "action_token",
+            "in": "header",
+            "description": "This is `action_token` of user",
+            "required": true,
+            "type": "string",
+            "default": ""
+          },
+          {
+            "name": "Authorization",
+            "in": "path",
+            "description": "This is `id` of user",
+            "default": "",
             "required": true,
             "type": "string"
           }
@@ -215,12 +348,6 @@
 
           }
         }
-      },
-      "put": {
-        "tags": ["Users"]
-      },
-      "delete": {
-        "tags": ["Users"]
       }
     }
   },
@@ -251,7 +378,7 @@
         }
       }
     },
-    "commonError": {
+    "commonError400": {
       "type": "object",
       "properties": {
         "msg": {
@@ -261,6 +388,19 @@
         "code": {
           "type": "number",
           "example": 400
+        }
+      }
+    },
+    "commonError404": {
+      "type": "object",
+      "properties": {
+        "msg": {
+          "type": "object",
+          "example": "User with this id does not exist"
+        },
+        "code": {
+          "type": "number",
+          "example": 404
         }
       }
     }
