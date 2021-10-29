@@ -9,6 +9,11 @@ module.exports = {
         code: 400
     },
 
+    TOO_BIG_FILE: (name) => ({
+        message: `File ${name} is too big`,
+        code: 400
+    }),
+
     NOT_VALID_TOKEN: {
         message: 'Invalid token',
         code: 401
@@ -37,6 +42,11 @@ module.exports = {
     NOT_FOUND_EMAIL_TEMPLATE: {
         message: 'Email template does not exist',
         code: 404
+    },
+
+    NOT_SUPPORTED_FORMAT: {
+        message: 'Not supported format',
+        code: 415
     },
 
     WRONG_TOKEN_TYPE: {

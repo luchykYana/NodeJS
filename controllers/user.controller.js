@@ -1,5 +1,5 @@
 const {User, O_Auth} = require('../dataBase');
-const {emailService, userService} = require('../service');
+const {emailService, userService, s3Service} = require('../service');
 const {emailActions} = require('../configs');
 
 module.exports = {
@@ -33,7 +33,13 @@ module.exports = {
         try {
             const user = req.body;
 
-            const newUser = await User.createUserWithHashPassword(user);
+            let newUser = await User.createUserWithHashPassword(user);
+
+            if (req.files && req.files.avatar) {
+                const uploadInfo = await s3Service.uploadImage(req.files.avatar, 'users', newUser._id.toString());
+
+                newUser = await User.findByIdAndUpdate(newUser._id, {avatar: uploadInfo.Location}, {new: true});
+            }
 
             await emailService.sendMail(user.email, emailActions.WELCOME, {userName: user.name});
 

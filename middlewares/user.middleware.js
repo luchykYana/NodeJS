@@ -63,6 +63,11 @@ module.exports = {
 
     isUserBodyValid: (validator, isLogin) => (req, res, next) => {
         try {
+            console.log('body-------------------------------');
+            console.log(req.body);
+            console.log('files-------------------------------');
+            console.log(req.files);
+
 
             const {error, value} = validator.validate(req.body);
 

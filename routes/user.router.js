@@ -1,10 +1,10 @@
 const router = require('express')
     .Router();
 
-const {userController} = require('../controllers');
-const userMiddleware = require('../middlewares/user.middleware');
-const {updateUserValidator, createUserValidator} = require('../validators/user.validator');
 const {userRoles, tokenTypes} = require('../configs');
+const {userController} = require('../controllers');
+const {userMiddleware, fileMiddleware} = require('../middlewares');
+const {updateUserValidator, createUserValidator} = require('../validators/user.validator');
 
 router.get(
     '/',
@@ -13,6 +13,7 @@ router.get(
 router.post(
     '/',
     userMiddleware.isUserBodyValid(createUserValidator),
+    fileMiddleware.checkUserAvatar,
     userMiddleware.checkUserByEmailMiddleware,
     userController.createUser
 );
