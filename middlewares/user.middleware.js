@@ -49,8 +49,6 @@ module.exports = {
 
             const user = await User.findById(user_id);
 
-            console.log(user);
-
             if (!user) {
                 throw new ErrorHandler(NOT_FOUND_BY_ID.message, NOT_FOUND_BY_ID.code);
             }

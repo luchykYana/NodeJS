@@ -42,7 +42,8 @@ userSchema.methods = {
     normaliseUser() {
         const fieldsToRemove = [
             'password',
-            '__v'
+            '__v',
+            'id'
         ];
 
         const normalisedUser = this.toObject();

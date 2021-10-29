@@ -12,7 +12,9 @@
   "paths": {
     "/users": {
       "post": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "operationId": "createUser",
         "description": "How to create user",
         "parameters": [
@@ -66,7 +68,9 @@
         }
       },
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "operationId": "getAllUsers",
         "description": "How to get all users",
         "parameters": [
@@ -148,9 +152,11 @@
         }
       }
     },
-    "/users/{user_id}": {
+    "/users/{userId}": {
       "get": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "operationId": "getOneUser",
         "description": "How to get one user",
         "parameters": [
@@ -158,14 +164,14 @@
             "name": "Authorization",
             "in": "path",
             "description": "This is `id` of user",
-            "default": "",
+            "default": "617969ed59aa102a23ef0e6f",
             "required": true,
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "User received",
+            "description": "User is received",
             "schema": {
               "type": "array",
               "items": {
@@ -200,12 +206,13 @@
             "schema": {
               "$ref": "#/definitions/commonError404"
             }
-
           }
         }
       },
       "put": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "operationId": "updateUser",
         "description": "How to update user",
         "parameters": [
@@ -235,7 +242,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User received",
+            "description": "User is updated",
             "schema": {
               "type": "array",
               "items": {
@@ -280,7 +287,9 @@
         }
       },
       "delete": {
-        "tags": ["Users"],
+        "tags": [
+          "Users"
+        ],
         "operationId": "deleteUser",
         "description": "How to delete user",
         "parameters": [
@@ -303,7 +312,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User received",
+            "description": "User is deleted",
             "schema": {
               "type": "array",
               "items": {
@@ -344,11 +353,208 @@
             "schema": {
               "$ref": "#/definitions/commonError404"
             }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "operationId": "login",
+        "description": "How to login",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "default": "example@gmail.com",
+            "type": "string"
+          },
+          {
+            "name": "password",
+            "in": "formData",
+            "required": true,
+            "default": "12345678Example",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Login was successful",
+            "schema": {
+              "$ref": "#/definitions/singleUser"
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError400"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Auth"],
+        "operationId": "logout",
+        "description": "How to logout",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU0OTU2NDIsImV4cCI6MTYzNTQ5NjU0Mn0.P7WMmHEFemicd_z6430RDMSEab-TpmPEKSI7YydGNaU",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Logout was successful",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "object",
+                  "example": "Goodbye"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError401"
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": ["Auth"],
+        "operationId": "refreshToken",
+        "description": "How to refresh token",
+        "parameters": [
+          {
+            "name": "Authorization",
+            "in": "header",
+            "required": true,
+            "default": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2MzU0OTU2NDIsImV4cCI6MTYzODA4NzY0Mn0.oA6nbvs88BynVoCgj0EVyA3j3eD4Z6IVdGqYg3RnqUQ",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Token is refreshed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "object",
+                  "example": "OK"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError401"
+            }
+          }
+        }
+        }
+      },
+    "/auth//password/forgot": {
+      "post": {
+        "tags": ["Password"],
+        "operationId": "passwordForgotFind",
+        "description": "Find user by email if password is forgotten",
+        "parameters": [
+          {
+            "name": "email",
+            "in": "formData",
+            "required": true,
+            "default": "example@gmail.com",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User by email was found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "object",
+                  "example": "OK"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError400"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Password"],
+        "operationId": "passwordForgotChange",
+        "description": "Change password",
+        "parameters": [
+          {
+            "name": "newPassword",
+            "in": "formData",
+            "required": true,
+            "default": "12345678Example",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Password is changed",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "msg": {
+                  "type": "object",
+                  "example": "OK"
+                },
+                "code": {
+                  "type": "number",
+                  "example": 200
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error",
+            "schema": {
+              "$ref": "#/definitions/commonError400"
+            }
+          }
         }
       }
     }
-  }
-},
+  },
   "definitions": {
     "singleUser": {
       "type": "object",
