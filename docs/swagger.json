@@ -152,7 +152,7 @@
         }
       }
     },
-    "/users/{userId}": {
+    "/users/{user_id}": {
       "get": {
         "tags": [
           "Users"
@@ -161,9 +161,8 @@
         "description": "How to get one user",
         "parameters": [
           {
-            "name": "Authorization",
+            "name": "user_id",
             "in": "path",
-            "description": "This is `id` of user",
             "default": "617969ed59aa102a23ef0e6f",
             "required": true,
             "type": "string"
@@ -225,7 +224,7 @@
             "default": ""
           },
           {
-            "name": "Authorization",
+            "name": "user_id",
             "in": "path",
             "description": "This is `id` of user",
             "default": "",
@@ -302,7 +301,7 @@
             "default": ""
           },
           {
-            "name": "Authorization",
+            "name": "user_id",
             "in": "path",
             "description": "This is `id` of user",
             "default": "",
@@ -476,7 +475,7 @@
         }
         }
       },
-    "/auth//password/forgot": {
+    "/auth/password/forgot": {
       "post": {
         "tags": ["Password"],
         "operationId": "passwordForgotFind",
